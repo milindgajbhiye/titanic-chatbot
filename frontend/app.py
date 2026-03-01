@@ -95,14 +95,20 @@ with button_col:
 with st.expander("💡 Not sure what to ask? See examples"):
     st.markdown("""
     Try any of these questions:
-    • What percentage of passengers were male?
-    • What was the average ticket fare?
-    • Where did passengers embark from?
+    - What percentage of passengers were male?
+    - What was the average ticket fare?
+    - Where did passengers embark from?
+    - How many passengers survived?
+    - What was the survival rate?
+    - How many passengers were in each class?
+    - What percentage of passengers were female?
+    - How many passengers were children?
+    - Show me the age histogram
     """)
 
 st.divider()
 
-if ask_button or user_question:
+if ask_button:
     if not user_question.strip():
         st.warning("🤔 Please type a question first!")
     
@@ -114,16 +120,17 @@ if ask_button or user_question:
                     json={"question": user_question},
                     timeout=5
                 )
-                if server_response.status_code == 200:
-                    response_data = server_response.json()
-                    answer = response_data['answer']
+
+            if server_response.status_code == 200:
+                response_data = server_response.json()
+                answer = response_data['answer']
 
                 st.success("✅ Found the answer!")
                 st.markdown(
                     f'<div class="response-box"><strong>Answer:</strong><br>{answer}</div>',
                     unsafe_allow_html=True
                 )
-                # --- NEW IMAGE SUPPORT ---
+
                 if "image" in response_data:
                     import base64
                     from PIL import Image
@@ -134,9 +141,9 @@ if ask_button or user_question:
 
                     st.markdown("<br>", unsafe_allow_html=True)
                     st.image(image, use_container_width=True)
-                
-                else:
-                    st.error("😕 The server couldn't understand that. Try rephrasing your question!")
+
+            else:
+                st.error("😕 The server returned an error. Try rephrasing your question!")
         
         except requests.exceptions.ConnectionError:
             st.error("❌ Can't connect to the backend server. Make sure it's running on http://127.0.0.1:8000")
