@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 
+BACKEND_URL = "http://127.0.0.1:8000"
+
 st.set_page_config(
     page_title="Titanic Explorer",
     page_icon="🚢",
@@ -116,7 +118,7 @@ if ask_button:
         try:
             with st.spinner("🔍 Searching through historical records..."):
                 server_response = requests.post(
-                    "http://127.0.0.1:8000/ask",
+                    f"{BACKEND_URL}/ask",
                     json={"question": user_question},
                     timeout=5
                 )
@@ -146,7 +148,7 @@ if ask_button:
                 st.error("😕 The server returned an error. Try rephrasing your question!")
         
         except requests.exceptions.ConnectionError:
-            st.error("❌ Can't connect to the backend server. Make sure it's running on http://127.0.0.1:8000")
+            st.error(f"❌ Can't connect to the backend server. Make sure it's running on {BACKEND_URL}")
         
         except requests.exceptions.Timeout:
             st.error("⏱️ The request took too long. Please try again!")
