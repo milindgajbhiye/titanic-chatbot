@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+streamlit
+pandas
+matplotlib
+requests
+Pillow
