@@ -6,11 +6,11 @@ It analyzes natural language questions about Titanic passenger statistics
 and returns relevant data-driven responses.
 """
 
+import os
 import pandas as pd
-from typing import Optional
 
 # Load the Titanic dataset
-df = pd.read_csv("titanic.csv")
+df = pd.read_csv(os.path.join(os.path.dirname(__file__), "titanic.csv"))
 
 
 def process_query(question: str) -> str:
